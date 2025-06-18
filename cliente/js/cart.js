@@ -1,5 +1,53 @@
 console.log('cart.js cargado');
 
+function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsDiv = document.getElementById('cartItems');
+    const emptyCartDiv = document.getElementById('emptyCart');
+    const subtotalSpan = document.getElementById('subtotal');
+    const totalSpan = document.getElementById('total');
+
+    if (!cartItemsDiv || !subtotalSpan || !totalSpan) return;
+
+    if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '';
+        if (emptyCartDiv) emptyCartDiv.style.display = 'block';
+        subtotalSpan.textContent = 'R$0.00';
+        totalSpan.textContent = 'R$0.00';
+        return;
+    }
+
+    if (emptyCartDiv) emptyCartDiv.style.display = 'none';
+
+    let subtotal = 0;
+    cartItemsDiv.innerHTML = cart.map(item => {
+        const price = Number(item.price) || 0;
+        const quantity = Number(item.quantity) || 0;
+        subtotal += price * quantity;
+        return `
+            <div class="cart-item d-flex align-items-center mb-3">
+                <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" class="me-3" style="width:60px;height:60px;object-fit:cover;">
+                <div class="flex-grow-1">
+                    <div><strong>${item.name}</strong> ${item.size ? `<span class="badge bg-secondary">${item.size}</span>` : ''}</div>
+                    <div class="text-muted">Cantidad: ${quantity}</div>
+                    <div class="text-muted">Precio: R$${price.toFixed(2)}</div>
+                </div>
+                <div class="ms-3">
+                    <strong>R$${(price * quantity).toFixed(2)}</strong>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    subtotalSpan.textContent = `R$${subtotal.toFixed(2)}`;
+    totalSpan.textContent = `R$${subtotal.toFixed(2)}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderCart();
+});
+
+
 function generarCodigoCliente(nombre, telefono) {
     const nombrePart = nombre.trim().toLowerCase().replace(/\s+/g, '').substring(0, 3);
     const telPart = telefono.trim().replace(/\D/g, '').slice(-4);
