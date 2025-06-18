@@ -25,15 +25,19 @@ function renderCart() {
         const quantity = Number(item.quantity) || 0;
         subtotal += price * quantity;
         return `
-            <div class="cart-item d-flex align-items-center mb-3">
+            <div class="cart-item d-flex align-items-center mb-3 border-bottom pb-2">
                 <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" class="me-3" style="width:60px;height:60px;object-fit:cover;">
                 <div class="flex-grow-1">
                     <div><strong>${item.name}</strong> ${item.size ? `<span class="badge bg-secondary">${item.size}</span>` : ''}</div>
                     <div class="text-muted">Cantidad: ${quantity}</div>
                     <div class="text-muted">Precio: R$${price.toFixed(2)}</div>
                 </div>
-                <div class="ms-3">
+                <div class="ms-3 text-end">
                     <strong>R$${(price * quantity).toFixed(2)}</strong>
+                    <br>
+                    <button class="btn btn-sm btn-danger mt-2" onclick="borrarItemCarrito('${item.id}')">
+                        <i class="bi bi-trash"></i> Quitar
+                    </button>
                 </div>
             </div>
         `;
@@ -41,6 +45,18 @@ function renderCart() {
 
     subtotalSpan.textContent = `R$${subtotal.toFixed(2)}`;
     totalSpan.textContent = `R$${subtotal.toFixed(2)}`;
+}
+
+function vaciarCarrito() {
+    localStorage.removeItem('cart');
+    renderCart();
+}
+
+function borrarItemCarrito(idProducto) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => String(item.id) !== String(idProducto));
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
