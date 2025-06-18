@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Mi Tienda</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./cliente/css/store-styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-bag-heart-fill me-2"></i>
+                Mi Tienda
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#products">
+                            <i class="bi bi-grid me-1"></i>Productos
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Cart -->
+                <div class="d-flex align-items-center">
+                    <a href="cart.html" class="btn btn-outline-light position-relative me-2 active">
+                        <i class="bi bi-cart3"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="cartCount">
+                            0
+                        </span>
+                    </a>
+                    <button class="btn btn-outline-light">
+                        <i class="bi bi-person-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                    <li class="breadcrumb-item active">Carrito</li>
+                </ol>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header mb-4">
+                <h1 class="page-title">
+                    <i class="bi bi-cart3 me-2"></i>
+                    Carrito de Compras
+                <p class="page-subtitle text-muted">Revisa tus productos antes de finalizar la compra</p>
+            </div>
+
+            <!-- Cart Content -->
+            <div class="row g-4">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    <div class="cart-items">
+                        <!-- Empty Cart Message -->
+                        <div id="emptyCart" class="empty-cart text-center py-5" style="display: none;">
+                            <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
+                            <h3 class="text-muted">Tu carrito está vacío</h3>
+                            <p class="text-muted mb-4">¡Agrega algunos productos para comenzar!</p>
+                            <a href="index.html" class="btn btn-primary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Continuar Comprando
+                            </a>
+                        </div>
+
+                        <!-- Cart Items List -->
+                        <div id="cartItems">
+                            <!-- Cart items will be loaded here -->
+                        </div>
+
+                        <!-- Continue Shopping -->
+                        <div class="continue-shopping mt-4">
+                            <a href="index.html" class="btn btn-outline-primary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Continuar Comprando
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="bi bi-receipt me-2"></i>
+                                    Resumen del Pedido
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="summary-item">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">R$0.00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Envío:</span>
+                                    <span id="shipping">R$Consultar</span>
+                                </div>
+                                <hr>
+                                <div class="summary-item total">
+                                    <span><strong>Total:</strong></span>
+                                    <span><strong id="total">R$0.00</strong></span>
+                                </div>
+                                <div class="promo-code mt-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Código promocional"
+                                            id="promoCode">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            onclick="applyPromoCode()">
+                                            Aplicar
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Campos adicionales para el pedido -->
+                                <div class="mb-3 mt-3">
+                                    <label for="customerName" class="form-label">Nombre completo</label>
+                                    <input type="text" class="form-control" id="customerName" placeholder="Tu nombre"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customerPhone" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="customerPhone" placeholder="Tu teléfono"
+                                        required>
+                                </div>
+                                <!-- Código de Cliente -->
+                                <div class="mb-3">
+                                    <label for="customerCode" class="form-label">Código de Cliente</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="customerCode" readonly>
+                                        <button class="btn btn-outline-secondary" type="button" id="copyCustomerCode"
+                                            title="Copiar código">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                    <small class="form-text text-muted">Este código es único para tu cuenta. Puedes
+                                        copiarlo si lo necesitas.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="paymentType" class="form-label">Tipo de pago</label>
+                                    <select class="form-select" id="paymentType" required>
+                                        <option value="Pix">Pix</option>
+                                        <option value="Dinero">Dinero</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="deliveryPlace" class="form-label">Lugar de entrega</label>
+                                    <input type="text" class="form-control" id="deliveryPlace"
+                                        placeholder="Dirección o punto de entrega" required>
+                                </div>
+                                <a id="whatsappCheckoutBtn" class="btn btn-success btn-lg w-100 mt-2" target="_blank">
+                                    <i class="bi bi-whatsapp me-2"></i>
+                                    Finalizar Compra por WhatsApp
+                                </a>
+                                <div class="payment-methods mt-3">
+                                    <small class="text-muted d-block mb-2">Métodos de pago aceptados:</small>
+                                    <div class="payment-icons">
+                                        <i class="bi bi-cash-coin text-success me-2"></i>
+                                        <img src="https://br.ebury.com/wp-content/uploads/2020/11/pix-foto-site-1.png"
+                                            alt="Pix" style="height: 6em; vertical-align: middle;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="security-features mt-3">
+                            <div class="feature-item">
+                                <i class="bi bi-shield-check text-success me-2"></i>
+                                <small>Compra 100% segura</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ...resto del HTML igual... -->
+
+                <!-- Bootstrap 5 JS -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                <!-- Custom JS -->
+                <script src="./cliente/js/script.js"></script>
+                <script src="./cliente/js/cart.js"></script>
+
+</body>
+
+</html>
