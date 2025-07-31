@@ -17,6 +17,7 @@ async function asignarPuntos({ id_cliente, motivo, puntos, id_admin, id_temporad
         console.error(err);
     }
 }
+
 async function listarPedidosCliente(id_cliente) {
     try {
         const resp = await fetch(`https://bk-ecommerce-0e4f.onrender.com/api/pedidos/cliente/${id_cliente}`);

@@ -307,6 +307,12 @@ function showContent(page) {
   if (page === "cupones") {
     cargarCupones();
   }
+  if (page === "reports") {
+    cargarReportes();
+  }
+  if (page === "dashboard") {
+    cargarDashboard();
+  }
 }
 
 // ===== INICIALIZACIÓN =====
